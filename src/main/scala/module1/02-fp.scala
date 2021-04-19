@@ -1,14 +1,12 @@
 package module1
 
-
 import java.util.UUID
 import scala.annotation.tailrec
-
 
 /**
  * referential transparency
  */
- object referential_transparency{
+object referential_transparency{
 
 
   case class Abiturient(id: String, email: String, fio: String)
@@ -49,7 +47,7 @@ import scala.annotation.tailrec
 }
 
 
- // recursion
+// recursion
 
 object recursion {
 
@@ -90,11 +88,11 @@ object recursion {
    *
    */
 
-   def fib(n: Int): Int = fib(n -1) + fib(n - 2)
+  def fib(n: Int): Int = fib(n -1) + fib(n - 2)
 
 }
 
-object hof{
+object hof {
 
   def printFactorialResult(r: Int) = println(s"Factorial result is ${r}")
 
@@ -132,23 +130,31 @@ object hof{
  */
 
 
- object opt {
+object opt {
 
   /**
    *
    * Реализовать тип Option, который будет указывать на присутствие либо отсутсвие результата
    */
 
-   // Animal
-   // Dog extend Animal
+  // Animal
+  // Dog extend Animal
   // Option[Dog] Option[Animal]
 
-   sealed trait Option[+A]{
+  sealed trait Option[+A]{
+    /**
+     *
+     * Реализовать метод isEmpty, который будет возвращать true если Option не пуст и false в противном случае
+     */
     def isEmpty: Boolean = this match {
       case Option.Some(_) => false
       case Option.None => true
     }
 
+    /**
+     *
+     * Реализовать метод get, который будет возвращать значение
+     */
     def get: A = this match {
       case Option.Some(v) => v
       case Option.None => throw new Exception("Get on empty list")
@@ -160,61 +166,71 @@ object hof{
       case Option.None => b
     }
 
+    // Safety change value in the box from A to B type
     def map[B](f: A => B): Option[B] = this match {
       case Option.Some(v) => Option.Some(f(v))
       case Option.None => Option.None
     }
 
-    def flatMap[B](f: A => Option[B]): Option[B] = ???
+    // Create some chains
+    def flatMap[B](f: A => Option[B]): Option[B] = this match {
+      case Option.Some(v) => f(v)
+      case Option.None => Option.None
+    }
 
     // val i : Option[Int]  i.map(v => v + 1)
 
-
+    /*
     def f(x: Int, y: Int): Option[Int] =
       if(y == 0) Option.None
       else Option.Some(x / y)
+     */
+
+    object Option{
+      case class Some[A](v: A) extends Option[A]
+      case object None extends Option[Nothing]
+    }
+
+    /**
+     *
+     * Реализовать метод printIfAny, который будет печатать значение, если оно есть
+     */
+    def printIfAny: Unit = {
+      this match {
+        case Option.Some(v) => println(v)
+        case Option.None => ()
+      }
+    }
+
+    /**
+     *
+     * реализовать метод orElse который будет возвращать другой Option, если данный пустой
+     */
+    // see: >: B - supertype, A - subtype
+    def orElse[B >: A](i: Option[B]): Option[B] = {
+      this match {
+        case Option.Some(v) => Option.Some(v)
+        case Option.None => i
+      }
+    }
 
 
+    /**
+     *
+     * Реализовать метод zip, который будет создавать Option от пары значений из 2-х Option
+     */
+    def zip[B >: A](b: Option[B]): Option[(A, B)] = {
+      this.flatMap(x => b.map(y => (x,y)))
+    }
+
+    /**
+     *
+     * Реализовать метод filter, который будет возвращать не пустой Option
+     * в случае если исходный не пуст и предикат от значения = true
+     */
+    def filter(f: A => Boolean):Option[A] = this match {
+      case Option.Some(v) if f(v) => Option.Some(v)
+      case _ => Option.None
+    }
   }
-
-   object Option{
-     case class Some[A](v: A) extends Option[A]
-     case object None extends Option[Nothing]
-   }
-
-
-  /**
-   *
-   * Реализовать метод printIfAny, который будет печатать значение, если оно есть
-   */
-
-  /**
-   *
-   * реализовать метод orElse который будет возвращать другой Option, если данный пустой
-   */
-
-
-  /**
-   *
-   * Реализовать метод isEmpty, который будет возвращать true если Option не пуст и false в противном случае
-   */
-
-
-  /**
-   *
-   * Реализовать метод get, который будет возвращать значение
-   */
-
-  /**
-   *
-   * Реализовать метод zip, который будет создавать Option от пары значений из 2-х Option
-   */
-
-
-  /**
-   *
-   * Реализовать метод filter, который будет возвращать не пустой Option
-   * в случае если исходный не пуст и предикат от значения = true
-   */
-
- }
+}
