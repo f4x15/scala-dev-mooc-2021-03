@@ -90,6 +90,18 @@ object recursion {
 
   def fib(n: Int): Int = fib(n -1) + fib(n - 2)
 
+  def fib2(n: Int): Int = {
+    var i: Int = n
+    var res: Int = 0
+    while (i > 0) {
+      res += i
+      i -= 1
+    }
+    res
+  }
+
+
+
 }
 
 object hof {
