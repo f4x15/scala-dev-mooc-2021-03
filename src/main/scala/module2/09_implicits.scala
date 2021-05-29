@@ -14,6 +14,8 @@ object implicits {
      *
      */
 
+    // ф-я которая неявным образом преобразуют нашу строку в StringOps, в нек-ю обертку
+    //  и в этой обертке есть такая trimToOption ф-я:
       implicit def strToStringOps(str: String): StringOps = new StringOps(str)
 
       class StringOps(string: String){
@@ -33,6 +35,7 @@ object implicits {
 
     // implicit conversions ОПАСНЫ
 
+    // exception in run-time
 //    implicit def strInt(str: String): Int = Integer.parseInt(str)
 
 //    "foobar" / 2
@@ -41,7 +44,7 @@ object implicits {
 
     def log(str: String) = println(str)
 
-    log(42)
+    log(42) // index of bound exception
 
 
 
