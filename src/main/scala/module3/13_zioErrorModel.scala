@@ -42,11 +42,12 @@ object zioErrorHandling {
      * Реализовать метод, котрый будет игнорировать ошибку в случае падения,
      * а в качестве результата возвращать Option
      */
-    def option: ZIO[R, Nothing, Option[A]] =
+    def option: ZIO[R, Nothing, Option[A]] = {
       foldM(
         _ => ZIO(_ => Right(None)),
         v => ZIO(_ => Right(Some(v)))
       )
+    }
 
     /**
      * Реализовать метод, котрый будет работать с каналом ошибки
@@ -93,7 +94,6 @@ object zioErrorHandling {
 
   def errorToErrorCode(str: String): Int = ???
 
-
   lazy val effFromEither: IO[String, Int] = zio.ZIO.fromEither(either)
 
   /**
@@ -106,6 +106,9 @@ object zioErrorHandling {
   /**
    * Изменить ошибку effFromEither
    */
+
+
+
 
   lazy val _: zio.ZIO[Any, Int, Int] = effFromEither.mapError(errorToErrorCode)
 
