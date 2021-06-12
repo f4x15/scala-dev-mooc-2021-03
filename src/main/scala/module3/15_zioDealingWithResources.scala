@@ -123,7 +123,7 @@ object tryFinally {
 
     def handleFile(file: File): ZIO[Console, Nothing, List[Unit]] = {
       val lines: List[String] = file.readLines
-      ZIO.foreach(lines)(putStrLn)
+      ZIO.foreach(lines)(putStrLn(_))
     }
 
 
