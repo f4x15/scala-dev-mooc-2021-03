@@ -137,6 +137,7 @@ object zioConstructors {
   // type-rotation: move type information into error-channel
   val zz: UIO[Option[Int]] = z.option // if need option from result
   val _: UIO[Option[Nothing]] = zz.some
+  zz.sandbox
 
   // From function  - sore environment dependence
   //  тк это функция появляется зависимость, которая параметризованная типом
@@ -384,6 +385,8 @@ object zioRecursion {
       // combine two effects into single effect
       ZIO.effect(println("Error, repeat input please!")) *> (readIntOrRetry)
     )
+
+  lazy val tt = readInt.option
 
   /**
     * Считаем факториал
