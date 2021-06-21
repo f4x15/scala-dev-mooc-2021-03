@@ -2,17 +2,14 @@ package module1
 
 import module2.implicits.{implicit_conversions, implicit_scopes}
 import module2.{higher_kinded_types, implicits, type_classes}
-import module3.functional_effects.functionalProgram.{
-  declarativeEncoding,
-  executableEncoding
-}
+import module3.functional_effects.functionalProgram.{declarativeEncoding, executableEncoding}
 import module3.tryFinally.zioBracket
 import module3.zioOperators.writeLine
 import module3.{zioConcurrency, zioOperators, zioRecursion, zioZManaged}
 import zio.Cause.{Both, Fail, Internal}
 import zio.console.{Console, getStrLn, putStrLn}
 import zio.duration.durationInt
-import zio.{Fiber, IO, Task, UIO, URIO, ZIO}
+import zio.{Fiber, IO, Ref, Task, UIO, URIO, ZIO}
 
 import scala.concurrent.Future
 import scala.language.{existentials, implicitConversions, postfixOps}
@@ -72,7 +69,17 @@ object App { // extends zio.App {
 
     }
 
-    zio.Runtime.default.unsafeRun(cuncerrent_multipleZioError.app)
+    zio.Runtime.default.unsafeRun(zioConcurrency.printEffectRunningTime(zioConcurrency.res3))
+    // zio.Runtime.default.unsafeRun(cuncerrent_multipleZioError.app)
+    /*
+    zio.Runtime.default.unsafeRun( for {
+      rn <- Ref.make(0)
+      _ <- rn.update(_ + 1)
+      v <- rn.get
+      _ <- putStrLn(v.toString)
+    } yield () )
+     */
+
 
     /*
     zio.Runtime.default.unsafeRun(

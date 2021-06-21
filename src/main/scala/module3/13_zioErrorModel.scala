@@ -125,6 +125,8 @@ object zioErrorHandling {
   // Если еерое во втором эффекте - то на выходе будет лежать right(Int)
   //  что логично учитывая сигнатуру метода
 
+  io3.fork
+
   // Sample:
   def either: Either[String, Int] = ???
   def errorToErrorCode(str: String): Int = ???
